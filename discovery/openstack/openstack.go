@@ -23,6 +23,7 @@ import (
 	"github.com/go-kit/log"
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
+	"github.com/grafana/regexp"
 	"github.com/mwitkow/go-conntrack"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/common/config"
@@ -35,9 +36,10 @@ import (
 
 // DefaultSDConfig is the default OpenStack SD configuration.
 var DefaultSDConfig = SDConfig{
-	Port:            80,
-	RefreshInterval: model.Duration(60 * time.Second),
-	Availability:    "public",
+	Port:               80,
+	RefreshInterval:    model.Duration(60 * time.Second),
+	Availability:       "public",
+	ClientMicroversion: "latest",
 }
 
 func init() {
@@ -64,6 +66,7 @@ type SDConfig struct {
 	AllTenants                  bool             `yaml:"all_tenants,omitempty"`
 	TLSConfig                   config.TLSConfig `yaml:"tls_config,omitempty"`
 	Availability                string           `yaml:"availability,omitempty"`
+	ClientMicroversion          string           `yaml:"client_microversion,omitempty"`
 }
 
 // NewDiscovererMetrics implements discovery.Config.
@@ -112,6 +115,12 @@ func (c *Role) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	}
 }
 
+func isValidVersion(version string) bool {
+	// Define a regular expression to match valid version numbers in the format "MajorNum.MinorNum"
+	versionRegex := regexp.MustCompile(`^\d+\.\d+$`)
+	return versionRegex.MatchString(version) || version == "latest"
+}
+
 // UnmarshalYAML implements the yaml.Unmarshaler interface.
 func (c *SDConfig) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	*c = DefaultSDConfig
@@ -132,6 +141,10 @@ func (c *SDConfig) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	}
 	if c.Region == "" {
 		return errors.New("openstack SD configuration requires a region")
+	}
+
+	if !isValidVersion(c.ClientMicroversion) {
+		return fmt.Errorf("client_microversion %s, is of invalid format. Must be of format MajorNum.MinorNum or latest", c.ClientMicroversion)
 	}
 
 	return nil
@@ -210,7 +223,7 @@ func newRefresher(conf *SDConfig, l log.Logger) (refresher, error) {
 	case OpenStackRoleHypervisor:
 		return newHypervisorDiscovery(client, &opts, conf.Port, conf.Region, availability, l), nil
 	case OpenStackRoleInstance:
-		return newInstanceDiscovery(client, &opts, conf.Port, conf.Region, conf.AllTenants, availability, l), nil
+		return newInstanceDiscovery(client, &opts, conf.Port, conf.Region, conf.AllTenants, availability, conf.ClientMicroversion, l), nil
 	}
 	return nil, errors.New("unknown OpenStack discovery role")
 }

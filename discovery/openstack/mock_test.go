@@ -282,13 +282,17 @@ const serverListBody = `
 			"OS-SRV-USG:launched_at": "2014-09-25T13:10:10.000000",
 			"OS-EXT-SRV-ATTR:hypervisor_hostname": "devstack",
 			"flavor": {
-				"id": "1",
-				"links": [
-					{
-						"href": "http://104.130.131.164:8774/fcad67a6189847c4aecfa3c81a05783b/flavors/1",
-						"rel": "bookmark"
-					}
-				]
+				"vcpus": 4,
+				"ram": 8192,
+				"disk": 0,
+				"ephemeral": 0,
+				"swap": 0,
+				"original_name": "m1.medium",
+				"extra_specs": {
+				  "aggregate_instance_extra_specs:general": "true",
+				  "hw:mem_page_size": "large",
+				  "hw:vif_multiqueue_enabled": "true"
+				}
 			},
 			"id": "af9bcad9-3c87-477d-9347-b291eabf480e",
 			"security_groups": [
@@ -327,7 +331,8 @@ const serverListBody = `
 					{
 						"version": 4,
 						"addr": "10.10.10.2",
-						"OS-EXT-IPS:type": "floating"
+						"OS-EXT-IPS:type": "floating",
+						"OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:7c:1b:2b"
 					}
 				]
 			},
@@ -357,13 +362,17 @@ const serverListBody = `
 			"OS-SRV-USG:launched_at": "2014-09-25T13:10:10.000000",
 			"OS-EXT-SRV-ATTR:hypervisor_hostname": "devstack",
 			"flavor": {
-				"id": "1",
-				"links": [
-					{
-						"href": "http://104.130.131.164:8774/fcad67a6189847c4aecfa3c81a05783b/flavors/1",
-						"rel": "bookmark"
-					}
-				]
+				"vcpus": 4,
+				"ram": 8192,
+				"disk": 0,
+				"ephemeral": 0,
+				"swap": 0,
+				"original_name": "m1.medium",
+				"extra_specs": {
+				  "aggregate_instance_extra_specs:general": "true",
+				  "hw:mem_page_size": "large",
+				  "hw:vif_multiqueue_enabled": "true"
+				}
 			},
 			"id": "ef079b0c-e610-4dfb-b1aa-b49f07ac48e5",
 			"security_groups": [
@@ -427,13 +436,17 @@ const serverListBody = `
 			"OS-SRV-USG:launched_at": "2014-09-25T13:04:49.000000",
 			"OS-EXT-SRV-ATTR:hypervisor_hostname": "devstack",
 			"flavor": {
-				"id": "1",
-				"links": [
-					{
-						"href": "http://104.130.131.164:8774/fcad67a6189847c4aecfa3c81a05783b/flavors/1",
-						"rel": "bookmark"
-					}
-				]
+				"vcpus": 4,
+				"ram": 8192,
+				"disk": 0,
+				"ephemeral": 0,
+				"swap": 0,
+				"original_name": "m1.medium",
+				"extra_specs": {
+				  "aggregate_instance_extra_specs:general": "true",
+				  "hw:mem_page_size": "large",
+				  "hw:vif_multiqueue_enabled": "true"
+				}
 			},
 			"id": "9e5476bd-a4ec-4653-93d6-72c93aa682ba",
 			"security_groups": [
@@ -466,17 +479,20 @@ const serverListBody = `
 				{
 					"version": 4,
 					"addr": "10.0.0.33",
-					"OS-EXT-IPS:type": "fixed"
+					"OS-EXT-IPS:type": "fixed",
+					"OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:7c:1b:2b"
 				},
 				{
 					"version": 4,
 					"addr": "10.0.0.34",
-					"OS-EXT-IPS:type": "fixed"
+					"OS-EXT-IPS:type": "fixed",
+					"OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:7c:1b:2b"
 				},
 				{
 					"version": 4,
 					"addr": "10.10.10.4",
-					"OS-EXT-IPS:type": "floating"
+					"OS-EXT-IPS:type": "floating",
+					"OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:7c:1b:2b"
 				}
 			]
 		},
@@ -498,13 +514,17 @@ const serverListBody = `
 		"OS-SRV-USG:launched_at": "2014-09-25T13:04:49.000000",
 		"OS-EXT-SRV-ATTR:hypervisor_hostname": "devstack",
 		"flavor": {
-			"id": "4",
-			"links": [
-				{
-					"href": "http://104.130.131.164:8774/fcad67a6189847c4aecfa3c81a05783b/flavors/1",
-					"rel": "bookmark"
-				}
-			]
+			"vcpus": 2,
+			"ram": 4096,
+			"disk": 0,
+			"ephemeral": 0,
+			"swap": 0,
+			"original_name": "m1.small",
+			"extra_specs": {
+			  "aggregate_instance_extra_specs:general": "true",
+			  "hw:mem_page_size": "large",
+			  "hw:vif_multiqueue_enabled": "true"
+			}
 		},
 		"id": "9e5476bd-a4ec-4653-93d6-72c93aa682bb",
 		"security_groups": [
@@ -533,52 +553,13 @@ const serverListBody = `
 }
 `
 
-// HandleServerListSuccessfully mocks server detail call.
 func (m *SDMock) HandleServerListSuccessfully() {
 	m.Mux.HandleFunc("/servers/detail", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(m.t, r, http.MethodGet)
 		testHeader(m.t, r, "X-Auth-Token", tokenID)
 
 		w.Header().Add("Content-Type", "application/json")
+		w.Header().Add("OpenStack-API-Version", "compute latest")
 		fmt.Fprint(w, serverListBody)
-	})
-}
-
-const listOutput = `
-{
-    "floating_ips": [
-        {
-            "fixed_ip": null,
-            "id": "1",
-            "instance_id": null,
-            "ip": "10.10.10.1",
-            "pool": "nova"
-        },
-        {
-            "fixed_ip": "10.0.0.32",
-            "id": "2",
-            "instance_id": "ef079b0c-e610-4dfb-b1aa-b49f07ac48e5",
-            "ip": "10.10.10.2",
-            "pool": "nova"
-        },
-        {
-            "fixed_ip": "10.0.0.34",
-            "id": "3",
-            "instance_id": "9e5476bd-a4ec-4653-93d6-72c93aa682bb",
-            "ip": "10.10.10.4",
-            "pool": "nova"
-        }
-    ]
-}
-`
-
-// HandleFloatingIPListSuccessfully mocks floating ips call.
-func (m *SDMock) HandleFloatingIPListSuccessfully() {
-	m.Mux.HandleFunc("/os-floating-ips", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(m.t, r, http.MethodGet)
-		testHeader(m.t, r, "X-Auth-Token", tokenID)
-
-		w.Header().Add("Content-Type", "application/json")
-		fmt.Fprint(w, listOutput)
 	})
 }

@@ -31,7 +31,6 @@ func (s *OpenstackSDInstanceTestSuite) SetupTest(t *testing.T) {
 	s.Mock.Setup()
 
 	s.Mock.HandleServerListSuccessfully()
-	s.Mock.HandleFloatingIPListSuccessfully()
 
 	s.Mock.HandleVersionsSuccessfully()
 	s.Mock.HandleAuthSuccessfully()
@@ -39,13 +38,14 @@ func (s *OpenstackSDInstanceTestSuite) SetupTest(t *testing.T) {
 
 func (s *OpenstackSDInstanceTestSuite) openstackAuthSuccess() (refresher, error) {
 	conf := SDConfig{
-		IdentityEndpoint: s.Mock.Endpoint(),
-		Password:         "test",
-		Username:         "test",
-		DomainName:       "12345",
-		Region:           "RegionOne",
-		Role:             "instance",
-		AllTenants:       true,
+		IdentityEndpoint:   s.Mock.Endpoint(),
+		Password:           "test",
+		Username:           "test",
+		DomainName:         "12345",
+		Region:             "RegionOne",
+		Role:               "instance",
+		AllTenants:         true,
+		ClientMicroversion: "latest",
 	}
 	return newRefresher(&conf, nil)
 }
@@ -71,7 +71,7 @@ func TestOpenstackSDInstanceRefresh(t *testing.T) {
 	for i, lbls := range []model.LabelSet{
 		{
 			"__address__":                      model.LabelValue("10.0.0.32:0"),
-			"__meta_openstack_instance_flavor": model.LabelValue("1"),
+			"__meta_openstack_instance_flavor": model.LabelValue("m1.medium"),
 			"__meta_openstack_instance_id":     model.LabelValue("ef079b0c-e610-4dfb-b1aa-b49f07ac48e5"),
 			"__meta_openstack_instance_image":  model.LabelValue("f90f6034-2570-4974-8351-6b49732ef2eb"),
 			"__meta_openstack_instance_status": model.LabelValue("ACTIVE"),
@@ -84,7 +84,7 @@ func TestOpenstackSDInstanceRefresh(t *testing.T) {
 		},
 		{
 			"__address__":                      model.LabelValue("10.0.0.31:0"),
-			"__meta_openstack_instance_flavor": model.LabelValue("1"),
+			"__meta_openstack_instance_flavor": model.LabelValue("m1.medium"),
 			"__meta_openstack_instance_id":     model.LabelValue("9e5476bd-a4ec-4653-93d6-72c93aa682ba"),
 			"__meta_openstack_instance_image":  model.LabelValue("f90f6034-2570-4974-8351-6b49732ef2eb"),
 			"__meta_openstack_instance_status": model.LabelValue("ACTIVE"),
@@ -96,11 +96,12 @@ func TestOpenstackSDInstanceRefresh(t *testing.T) {
 		},
 		{
 			"__address__":                      model.LabelValue("10.0.0.33:0"),
-			"__meta_openstack_instance_flavor": model.LabelValue("4"),
+			"__meta_openstack_instance_flavor": model.LabelValue("m1.small"),
 			"__meta_openstack_instance_id":     model.LabelValue("9e5476bd-a4ec-4653-93d6-72c93aa682bb"),
 			"__meta_openstack_instance_status": model.LabelValue("ACTIVE"),
 			"__meta_openstack_instance_name":   model.LabelValue("merp"),
 			"__meta_openstack_private_ip":      model.LabelValue("10.0.0.33"),
+			"__meta_openstack_public_ip":       model.LabelValue("10.10.10.4"),
 			"__meta_openstack_address_pool":    model.LabelValue("private"),
 			"__meta_openstack_tag_env":         model.LabelValue("prod"),
 			"__meta_openstack_project_id":      model.LabelValue("fcad67a6189847c4aecfa3c81a05783b"),
@@ -108,7 +109,7 @@ func TestOpenstackSDInstanceRefresh(t *testing.T) {
 		},
 		{
 			"__address__":                      model.LabelValue("10.0.0.34:0"),
-			"__meta_openstack_instance_flavor": model.LabelValue("4"),
+			"__meta_openstack_instance_flavor": model.LabelValue("m1.small"),
 			"__meta_openstack_instance_id":     model.LabelValue("9e5476bd-a4ec-4653-93d6-72c93aa682bb"),
 			"__meta_openstack_instance_status": model.LabelValue("ACTIVE"),
 			"__meta_openstack_instance_name":   model.LabelValue("merp"),

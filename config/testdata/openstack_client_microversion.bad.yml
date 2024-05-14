@@ -1,0 +1,5 @@
+scrape_configs:
+  - openstack_sd_configs:
+      - client_microversion: 2.1.0
+        role: instance
+        region: RegionOne

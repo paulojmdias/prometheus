@@ -1047,11 +1047,12 @@ var expectedConf = &Config{
 
 			ServiceDiscoveryConfigs: discovery.Configs{
 				&openstack.SDConfig{
-					Role:            "instance",
-					Region:          "RegionOne",
-					Port:            80,
-					Availability:    "public",
-					RefreshInterval: model.Duration(60 * time.Second),
+					Role:               "instance",
+					Region:             "RegionOne",
+					Port:               80,
+					Availability:       "public",
+					ClientMicroversion: "latest",
+					RefreshInterval:    model.Duration(60 * time.Second),
 					TLSConfig: config.TLSConfig{
 						CAFile:   "testdata/valid_ca_file",
 						CertFile: "testdata/valid_cert_file",
@@ -1761,6 +1762,10 @@ var expectedErrors = []struct {
 	{
 		filename: "openstack_availability.bad.yml",
 		errMsg:   "unknown availability invalid, must be one of admin, internal or public",
+	},
+	{
+		filename: "openstack_client_microversion.bad.yml",
+		errMsg:   "client_microversion 2.1.0, is of invalid format. Must be of format MajorNum.MinorNum or latest",
 	},
 	{
 		filename: "url_in_targetgroup.bad.yml",
