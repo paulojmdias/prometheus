@@ -17,6 +17,7 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"strconv"
 
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
@@ -92,7 +93,7 @@ func (i *InstanceDiscovery) refresh(ctx context.Context) ([]*targetgroup.Group, 
 	}
 	pager := servers.List(client, opts)
 	tg := &targetgroup.Group{
-		Source: fmt.Sprintf("OS_" + i.region),
+		Source: "OS_" + i.region,
 	}
 	err = pager.EachPage(func(page pagination.Page) (bool, error) {
 		if ctx.Err() != nil {
@@ -183,7 +184,7 @@ func (i *InstanceDiscovery) refresh(ctx context.Context) ([]*targetgroup.Group, 
 						}
 					}
 
-					addr = net.JoinHostPort(addr, fmt.Sprintf("%d", i.port))
+					addr = net.JoinHostPort(addr, strconv.Itoa(i.port))
 					lbls[model.AddressLabel] = model.LabelValue(addr)
 
 					tg.Targets = append(tg.Targets, lbls)
