@@ -457,7 +457,7 @@ metric_relabel_configs:
 # reduced until it is within the limit.
 # To set an upper limit for the schema (equivalent to "scale" in OTel's
 # exponential histograms), use the following factor limits:
-# 
+#
 # +----------------------------+----------------------------+
 # |        growth factor       | resulting schema AKA scale |
 # +----------------------------+----------------------------+
@@ -487,7 +487,7 @@ metric_relabel_configs:
 # +----------------------------+----------------------------+
 # |              1.002         |              8             |
 # +----------------------------+----------------------------+
-# 
+#
 # 0 results in the smallest supported factor (which is currently ~1.0027 or
 # schema 8, but might change in the future).
 [ native_histogram_min_bucket_factor: <float> | default = 0 ]
@@ -683,7 +683,7 @@ The following meta labels are available on targets during [relabeling](#relabel_
 * `__meta_consul_address`: the address of the target
 * `__meta_consul_dc`: the datacenter name for the target
 * `__meta_consul_health`: the health status of the service
-* `__meta_consul_partition`: the admin partition name where the service is registered 
+* `__meta_consul_partition`: the admin partition name where the service is registered
 * `__meta_consul_metadata_<key>`: each node metadata key value of the target
 * `__meta_consul_node`: the node name defined for the target
 * `__meta_consul_service_address`: the service address of the target
@@ -1423,6 +1423,11 @@ region: <string>
 
 # The availability of the endpoint to connect to. Must be one of public, admin or internal.
 [ availability: <string> | default = "public" ]
+
+# The compute client microversion to be used for API Interaction
+# It is only relevant for the 'instance' role.
+# https://docs.openstack.org/api-guide/compute/microversions.html
+[ client_microversion: <string> | default = "latest" ]
 
 # TLS configuration.
 tls_config:
@@ -2275,7 +2280,7 @@ See below for the configuration options for Kuma MonitoringAssignment discovery:
 # Address of the Kuma Control Plane's MADS xDS server.
 server: <string>
 
-# Client id is used by Kuma Control Plane to compute Monitoring Assignment for specific Prometheus backend. 
+# Client id is used by Kuma Control Plane to compute Monitoring Assignment for specific Prometheus backend.
 # This is useful when migrating between multiple Prometheus backends, or having separate backend for each Mesh.
 # When not specified, system hostname/fqdn will be used if available, if not `prometheus` will be used.
 [ client_id: <string> ]
@@ -2460,7 +2465,7 @@ The following meta labels are available on targets during [relabeling](#relabel_
 * `__meta_linode_status`: the status of the linode instance
 * `__meta_linode_tags`: a list of tags of the linode instance joined by the tag separator
 * `__meta_linode_group`: the display group a linode instance is a member of
-* `__meta_linode_gpus`: the number of GPU's of the linode instance 
+* `__meta_linode_gpus`: the number of GPU's of the linode instance
 * `__meta_linode_hypervisor`: the virtualization software powering the linode instance
 * `__meta_linode_backups`: the backup service status of the linode instance
 * `__meta_linode_specs_disk_bytes`: the amount of storage space the linode instance has access to
@@ -3625,7 +3630,7 @@ azuread:
 
   # Azure User-assigned Managed identity.
   [ managed_identity:
-      [ client_id: <string> ] ]  
+      [ client_id: <string> ] ]
 
   # Azure OAuth.
   [ oauth:

@@ -183,7 +183,6 @@ func (i *InstanceDiscovery) refresh(ctx context.Context) ([]*targetgroup.Group, 
 							}
 						}
 					}
-
 					addr = net.JoinHostPort(addr, strconv.Itoa(i.port))
 					lbls[model.AddressLabel] = model.LabelValue(addr)
 
