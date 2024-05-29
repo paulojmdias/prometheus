@@ -125,7 +125,7 @@ func queryVersionInfo(client http.Client, url string) (string, error) {
 
 type floatingIPKey struct {
 	tenantID string
-	fixed     string
+	fixed    string
 }
 
 func (i *InstanceDiscovery) refresh(ctx context.Context) ([]*targetgroup.Group, error) {
