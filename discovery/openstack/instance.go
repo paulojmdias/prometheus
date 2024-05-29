@@ -17,7 +17,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net"
 	"net/http"
 	"strconv"
@@ -74,7 +74,7 @@ func newInstanceDiscovery(provider *gophercloud.ProviderClient, opts *gopherclou
 	}
 }
 
-// VersionInfo discover the latest microversion available on OpenStack Compute API
+// VersionInfo discover the latest microversion available on OpenStack Compute API.
 // https://docs.openstack.org/api-guide/compute/microversions.html
 type VersionInfo struct {
 	Version struct {
@@ -95,7 +95,7 @@ type VersionInfo struct {
 	} `json:"version"`
 }
 
-// queryVersionInfo get the min_version and version (max version) miroversion available from Openstack Compute API
+// queryVersionInfo get the min_version and version (max version) miroversion available from Openstack Compute API.
 func queryVersionInfo(client http.Client, url string) (string, error) {
 	resp, err := client.Get(url)
 	if err != nil {
@@ -107,7 +107,7 @@ func queryVersionInfo(client http.Client, url string) (string, error) {
 		return "", fmt.Errorf("failed to get response: status code %d", resp.StatusCode)
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}
@@ -124,7 +124,7 @@ func queryVersionInfo(client http.Client, url string) (string, error) {
 }
 
 type floatingIPKey struct {
-	tenant_id string
+	tenantID string
 	fixed     string
 }
 
@@ -143,6 +143,9 @@ func (i *InstanceDiscovery) refresh(ctx context.Context) ([]*targetgroup.Group, 
 	}
 
 	version, err := queryVersionInfo(i.provider.HTTPClient, client.Endpoint)
+	if err != nil {
+		return nil, fmt.Errorf("Error querying version info: %w", err)
+	}
 	client.Microversion = version
 
 	networkClient, err := openstack.NewNetworkV2(i.provider, gophercloud.EndpointOpts{
@@ -167,7 +170,7 @@ func (i *InstanceDiscovery) refresh(ctx context.Context) ([]*targetgroup.Group, 
 			if ip.PortID == "" || ip.FixedIP == "" {
 				continue
 			}
-			floatingIPList[floatingIPKey{tenant_id: ip.TenantID, fixed: ip.FixedIP}] = ip.FloatingIP
+			floatingIPList[floatingIPKey{tenantID: ip.TenantID, fixed: ip.FixedIP}] = ip.FloatingIP
 			floatingIPPresent[ip.FloatingIP] = struct{}{}
 		}
 		return true, nil
@@ -259,7 +262,7 @@ func (i *InstanceDiscovery) refresh(ctx context.Context) ([]*targetgroup.Group, 
 					}
 					lbls[openstackLabelAddressPool] = model.LabelValue(pool)
 					lbls[openstackLabelPrivateIP] = model.LabelValue(addr)
-					if val, ok := floatingIPList[floatingIPKey{tenant_id: s.TenantID, fixed: addr}]; ok {
+					if val, ok := floatingIPList[floatingIPKey{tenantID: s.TenantID, fixed: addr}]; ok {
 						lbls[openstackLabelPublicIP] = model.LabelValue(val)
 					}
 					addr = net.JoinHostPort(addr, strconv.Itoa(i.port))
