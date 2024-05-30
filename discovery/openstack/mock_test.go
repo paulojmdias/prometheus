@@ -24,9 +24,9 @@ import (
 
 // SDMock is the interface for the OpenStack mock.
 type SDMock struct {
-	t	  *testing.T
+	t      *testing.T
 	Server *httptest.Server
-	Mux	*http.ServeMux
+	Mux    *http.ServeMux
 }
 
 // NewSDMock returns a new SDMock.
