@@ -24,9 +24,9 @@ import (
 
 // SDMock is the interface for the OpenStack mock.
 type SDMock struct {
-	t      *testing.T
+	t	  *testing.T
 	Server *httptest.Server
-	Mux    *http.ServeMux
+	Mux	*http.ServeMux
 }
 
 // NewSDMock returns a new SDMock.
@@ -64,27 +64,27 @@ func testHeader(t *testing.T, r *http.Request, header, expected string) {
 func (m *SDMock) HandleVersionsSuccessfully() {
 	m.Mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, `
-                        {
-                                "versions": {
-                                        "values": [
-                                                {
-                                                        "status": "stable",
-                                                        "id": "v3.0",
-                                                        "links": [
-                                                                { "href": "%s", "rel": "self" }
-                                                        ]
-                                                },
-                                                {
-                                                        "status": "stable",
-                                                        "id": "v2.0",
-                                                        "links": [
-                                                                { "href": "%s", "rel": "self" }
-                                                        ]
-                                                }
-                                        ]
-                                }
-                        }
-                `, m.Endpoint()+"v3/", m.Endpoint()+"v2.0/")
+						{
+								"versions": {
+										"values": [
+												{
+														"status": "stable",
+														"id": "v3.0",
+														"links": [
+																{ "href": "%s", "rel": "self" }
+														]
+												},
+												{
+														"status": "stable",
+														"id": "v2.0",
+														"links": [
+																{ "href": "%s", "rel": "self" }
+														]
+												}
+										]
+								}
+						}
+				`, m.Endpoint()+"v3/", m.Endpoint()+"v2.0/")
 	})
 }
 
@@ -96,95 +96,95 @@ func (m *SDMock) HandleAuthSuccessfully() {
 		w.WriteHeader(http.StatusCreated)
 		fmt.Fprintf(w, `
 	{
-    "token": {
-        "audit_ids": ["VcxU2JYqT8OzfUVvrjEITQ", "qNUTIJntTzO1-XUk5STybw"],
-        "catalog": [
-            {
-                "endpoints": [
-                    {
-                        "id": "39dc322ce86c4111b4f06c2eeae0841b",
-                        "interface": "public",
-                        "region": "RegionOne",
-                        "url": "http://localhost:5000"
-                    },
-                    {
-                        "id": "ec642f27474842e78bf059f6c48f4e99",
-                        "interface": "internal",
-                        "region": "RegionOne",
-                        "url": "http://localhost:5000"
-                    },
-                    {
-                        "id": "c609fc430175452290b62a4242e8a7e8",
-                        "interface": "admin",
-                        "region": "RegionOne",
-                        "url": "http://localhost:35357"
-                    }
-                ],
-                "id": "4363ae44bdf34a3981fde3b823cb9aa2",
-                "type": "identity",
-                "name": "keystone"
-            },
-	    	{
-                "endpoints": [
-                    {
-                        "id": "e2ffee808abc4a60916715b1d4b489dd",
-                        "interface": "public",
-                        "region": "RegionOne",
-                        "region_id": "RegionOne",
-                        "url": "%s"
-                    }
-                ],
-                "id": "b7f2a5b1a019459cb956e43a8cb41e31",
-                "type": "compute"
-            },
+	"token": {
+		"audit_ids": ["VcxU2JYqT8OzfUVvrjEITQ", "qNUTIJntTzO1-XUk5STybw"],
+		"catalog": [
 			{
-                "endpoints": [
-                    {
-                        "id": "39dc322ce86c4111b4f06c2eeae0841b",
-                        "interface": "public",
-                        "region": "RegionOne",
-                        "region_id": "RegionOne",
-                        "url": "%s"
-                    }
-                ],
-                "id": "c609fc430175452290b62a4242e8a7e8",
-                "type": "network"
-            }
-        ],
-        "expires_at": "2013-02-27T18:30:59.999999Z",
-        "is_domain": false,
-        "issued_at": "2013-02-27T16:30:59.999999Z",
-        "methods": [
-            "password"
-        ],
-        "project": {
-            "domain": {
-                "id": "1789d1",
-                "name": "example.com"
-            },
-            "id": "263fd9",
-            "name": "project-x"
-        },
-        "roles": [
-            {
-                "id": "76e72a",
-                "name": "admin"
-            },
-            {
-                "id": "f4f392",
-                "name": "member"
-            }
-        ],
-        "user": {
-            "domain": {
-                "id": "1789d1",
-                "name": "example.com"
-            },
-            "id": "0ca8f6",
-            "name": "Joe",
-            "password_expires_at": "2016-11-06T15:32:17.000000"
-        }
-    }
+				"endpoints": [
+					{
+						"id": "39dc322ce86c4111b4f06c2eeae0841b",
+						"interface": "public",
+						"region": "RegionOne",
+						"url": "http://localhost:5000"
+					},
+					{
+						"id": "ec642f27474842e78bf059f6c48f4e99",
+						"interface": "internal",
+						"region": "RegionOne",
+						"url": "http://localhost:5000"
+					},
+					{
+						"id": "c609fc430175452290b62a4242e8a7e8",
+						"interface": "admin",
+						"region": "RegionOne",
+						"url": "http://localhost:35357"
+					}
+				],
+				"id": "4363ae44bdf34a3981fde3b823cb9aa2",
+				"type": "identity",
+				"name": "keystone"
+			},
+			{
+				"endpoints": [
+					{
+						"id": "e2ffee808abc4a60916715b1d4b489dd",
+						"interface": "public",
+						"region": "RegionOne",
+						"region_id": "RegionOne",
+						"url": "%s"
+					}
+				],
+				"id": "b7f2a5b1a019459cb956e43a8cb41e31",
+				"type": "compute"
+			},
+			{
+				"endpoints": [
+					{
+						"id": "39dc322ce86c4111b4f06c2eeae0841b",
+						"interface": "public",
+						"region": "RegionOne",
+						"region_id": "RegionOne",
+						"url": "%s"
+					}
+				],
+				"id": "c609fc430175452290b62a4242e8a7e8",
+				"type": "network"
+			}
+		],
+		"expires_at": "2013-02-27T18:30:59.999999Z",
+		"is_domain": false,
+		"issued_at": "2013-02-27T16:30:59.999999Z",
+		"methods": [
+			"password"
+		],
+		"project": {
+			"domain": {
+				"id": "1789d1",
+				"name": "example.com"
+			},
+			"id": "263fd9",
+			"name": "project-x"
+		},
+		"roles": [
+			{
+				"id": "76e72a",
+				"name": "admin"
+			},
+			{
+				"id": "f4f392",
+				"name": "member"
+			}
+		],
+		"user": {
+			"domain": {
+				"id": "1789d1",
+				"name": "example.com"
+			},
+			"id": "0ca8f6",
+			"name": "Joe",
+			"password_expires_at": "2016-11-06T15:32:17.000000"
+		}
+	}
 }
 	`, m.Endpoint(), m.Endpoint())
 	})
@@ -192,60 +192,60 @@ func (m *SDMock) HandleAuthSuccessfully() {
 
 const hypervisorListBody = `
 {
-    "hypervisors": [
-        {
-            "status": "enabled",
-            "service": {
-                "host": "nc14.cloud.com",
-                "disabled_reason": null,
-                "id": 16
-            },
-            "vcpus_used": 18,
-            "hypervisor_type": "QEMU",
-            "local_gb_used": 84,
-            "vcpus": 24,
-            "hypervisor_hostname": "nc14.cloud.com",
-            "memory_mb_used": 24064,
-            "memory_mb": 96484,
-            "current_workload": 1,
-            "state": "up",
-            "host_ip": "172.16.70.14",
-            "cpu_info": "{\"vendor\": \"Intel\", \"model\": \"IvyBridge\", \"arch\": \"x86_64\", \"features\": [\"pge\", \"avx\", \"clflush\", \"sep\", \"syscall\", \"vme\", \"dtes64\", \"msr\", \"fsgsbase\", \"xsave\", \"vmx\", \"erms\", \"xtpr\", \"cmov\", \"smep\", \"ssse3\", \"est\", \"pat\", \"monitor\", \"smx\", \"pbe\", \"lm\", \"tsc\", \"nx\", \"fxsr\", \"tm\", \"sse4.1\", \"pae\", \"sse4.2\", \"pclmuldq\", \"acpi\", \"tsc-deadline\", \"mmx\", \"osxsave\", \"cx8\", \"mce\", \"de\", \"tm2\", \"ht\", \"dca\", \"lahf_lm\", \"popcnt\", \"mca\", \"pdpe1gb\", \"apic\", \"sse\", \"f16c\", \"pse\", \"ds\", \"invtsc\", \"pni\", \"rdtscp\", \"aes\", \"sse2\", \"ss\", \"ds_cpl\", \"pcid\", \"fpu\", \"cx16\", \"pse36\", \"mtrr\", \"pdcm\", \"rdrand\", \"x2apic\"], \"topology\": {\"cores\": 6, \"cells\": 2, \"threads\": 2, \"sockets\": 1}}",
-            "running_vms": 10,
-            "free_disk_gb": 315,
-            "hypervisor_version": 2003000,
-            "disk_available_least": 304,
-            "local_gb": 399,
-            "free_ram_mb": 72420,
-            "id": 1
-        },
-        {
-            "status": "enabled",
-            "service": {
-                "host": "cc13.cloud.com",
-                "disabled_reason": null,
-                "id": 17
-            },
-            "vcpus_used": 1,
-            "hypervisor_type": "QEMU",
-            "local_gb_used": 20,
-            "vcpus": 24,
-            "hypervisor_hostname": "cc13.cloud.com",
-            "memory_mb_used": 2560,
-            "memory_mb": 96484,
-            "current_workload": 0,
-            "state": "up",
-            "host_ip": "172.16.70.13",
-            "cpu_info": "{\"vendor\": \"Intel\", \"model\": \"IvyBridge\", \"arch\": \"x86_64\", \"features\": [\"pge\", \"avx\", \"clflush\", \"sep\", \"syscall\", \"vme\", \"dtes64\", \"msr\", \"fsgsbase\", \"xsave\", \"vmx\", \"erms\", \"xtpr\", \"cmov\", \"smep\", \"ssse3\", \"est\", \"pat\", \"monitor\", \"smx\", \"pbe\", \"lm\", \"tsc\", \"nx\", \"fxsr\", \"tm\", \"sse4.1\", \"pae\", \"sse4.2\", \"pclmuldq\", \"acpi\", \"tsc-deadline\", \"mmx\", \"osxsave\", \"cx8\", \"mce\", \"de\", \"tm2\", \"ht\", \"dca\", \"lahf_lm\", \"popcnt\", \"mca\", \"pdpe1gb\", \"apic\", \"sse\", \"f16c\", \"pse\", \"ds\", \"invtsc\", \"pni\", \"rdtscp\", \"aes\", \"sse2\", \"ss\", \"ds_cpl\", \"pcid\", \"fpu\", \"cx16\", \"pse36\", \"mtrr\", \"pdcm\", \"rdrand\", \"x2apic\"], \"topology\": {\"cores\": 6, \"cells\": 2, \"threads\": 2, \"sockets\": 1}}",
-            "running_vms": 0,
-            "free_disk_gb": 379,
-            "hypervisor_version": 2003000,
-            "disk_available_least": 384,
-            "local_gb": 399,
-            "free_ram_mb": 93924,
-            "id": 721
-        }
-    ]
+	"hypervisors": [
+		{
+			"status": "enabled",
+			"service": {
+				"host": "nc14.cloud.com",
+				"disabled_reason": null,
+				"id": 16
+			},
+			"vcpus_used": 18,
+			"hypervisor_type": "QEMU",
+			"local_gb_used": 84,
+			"vcpus": 24,
+			"hypervisor_hostname": "nc14.cloud.com",
+			"memory_mb_used": 24064,
+			"memory_mb": 96484,
+			"current_workload": 1,
+			"state": "up",
+			"host_ip": "172.16.70.14",
+			"cpu_info": "{\"vendor\": \"Intel\", \"model\": \"IvyBridge\", \"arch\": \"x86_64\", \"features\": [\"pge\", \"avx\", \"clflush\", \"sep\", \"syscall\", \"vme\", \"dtes64\", \"msr\", \"fsgsbase\", \"xsave\", \"vmx\", \"erms\", \"xtpr\", \"cmov\", \"smep\", \"ssse3\", \"est\", \"pat\", \"monitor\", \"smx\", \"pbe\", \"lm\", \"tsc\", \"nx\", \"fxsr\", \"tm\", \"sse4.1\", \"pae\", \"sse4.2\", \"pclmuldq\", \"acpi\", \"tsc-deadline\", \"mmx\", \"osxsave\", \"cx8\", \"mce\", \"de\", \"tm2\", \"ht\", \"dca\", \"lahf_lm\", \"popcnt\", \"mca\", \"pdpe1gb\", \"apic\", \"sse\", \"f16c\", \"pse\", \"ds\", \"invtsc\", \"pni\", \"rdtscp\", \"aes\", \"sse2\", \"ss\", \"ds_cpl\", \"pcid\", \"fpu\", \"cx16\", \"pse36\", \"mtrr\", \"pdcm\", \"rdrand\", \"x2apic\"], \"topology\": {\"cores\": 6, \"cells\": 2, \"threads\": 2, \"sockets\": 1}}",
+			"running_vms": 10,
+			"free_disk_gb": 315,
+			"hypervisor_version": 2003000,
+			"disk_available_least": 304,
+			"local_gb": 399,
+			"free_ram_mb": 72420,
+			"id": 1
+		},
+		{
+			"status": "enabled",
+			"service": {
+				"host": "cc13.cloud.com",
+				"disabled_reason": null,
+				"id": 17
+			},
+			"vcpus_used": 1,
+			"hypervisor_type": "QEMU",
+			"local_gb_used": 20,
+			"vcpus": 24,
+			"hypervisor_hostname": "cc13.cloud.com",
+			"memory_mb_used": 2560,
+			"memory_mb": 96484,
+			"current_workload": 0,
+			"state": "up",
+			"host_ip": "172.16.70.13",
+			"cpu_info": "{\"vendor\": \"Intel\", \"model\": \"IvyBridge\", \"arch\": \"x86_64\", \"features\": [\"pge\", \"avx\", \"clflush\", \"sep\", \"syscall\", \"vme\", \"dtes64\", \"msr\", \"fsgsbase\", \"xsave\", \"vmx\", \"erms\", \"xtpr\", \"cmov\", \"smep\", \"ssse3\", \"est\", \"pat\", \"monitor\", \"smx\", \"pbe\", \"lm\", \"tsc\", \"nx\", \"fxsr\", \"tm\", \"sse4.1\", \"pae\", \"sse4.2\", \"pclmuldq\", \"acpi\", \"tsc-deadline\", \"mmx\", \"osxsave\", \"cx8\", \"mce\", \"de\", \"tm2\", \"ht\", \"dca\", \"lahf_lm\", \"popcnt\", \"mca\", \"pdpe1gb\", \"apic\", \"sse\", \"f16c\", \"pse\", \"ds\", \"invtsc\", \"pni\", \"rdtscp\", \"aes\", \"sse2\", \"ss\", \"ds_cpl\", \"pcid\", \"fpu\", \"cx16\", \"pse36\", \"mtrr\", \"pdcm\", \"rdrand\", \"x2apic\"], \"topology\": {\"cores\": 6, \"cells\": 2, \"threads\": 2, \"sockets\": 1}}",
+			"running_vms": 0,
+			"free_disk_gb": 379,
+			"hypervisor_version": 2003000,
+			"disk_available_least": 384,
+			"local_gb": 399,
+			"free_ram_mb": 93924,
+			"id": 721
+		}
+	]
 }`
 
 // HandleHypervisorListSuccessfully mocks os-hypervisors detail call.
@@ -566,7 +566,7 @@ func (m *SDMock) HandleServerListSuccessfully() {
 
 const listOutput = `
 {
-    "floatingips": [
+	"floatingips": [
 		{
 			"id": "03a77860-ae03-46c4-b502-caea11467a79",
 			"tenant_id": "fcad67a6189847c4aecfa3c81a05783b",
@@ -583,11 +583,9 @@ const listOutput = `
 			"port_forwardings": [],
 			"tags": [],
 			"created_at": "2023-08-30T16:30:27Z",
-			"updated_at": "2023-08-30T16:30:28Z",
-			"revision_number": 1,
-			"project_id": "fcad67a6189847c4aecfa3c81a05783b"
-		  },
-		  {
+			"updated_at": "2023-08-30T16:30:28Z"
+		},
+		{
 			"id": "03e28c79-5a4c-491e-a4fe-3ff6bba830c6",
 			"tenant_id": "fcad67a6189847c4aecfa3c81a05783b",
 			"floating_ip_address": "10.10.10.2",
@@ -611,11 +609,9 @@ const listOutput = `
 			"port_forwardings": [],
 			"tags": [],
 			"created_at": "2023-09-06T15:45:36Z",
-			"updated_at": "2023-09-06T15:45:36Z",
-			"revision_number": 1,
-			"project_id": "fcad67a6189847c4aecfa3c81a05783b"
-		  },
-		  {
+			"updated_at": "2023-09-06T15:45:36Z"
+		},
+		{
 			"id": "087fcdd2-1d13-4f72-9c0e-c759e796d558",
 			"tenant_id": "fcad67a6189847c4aecfa3c81a05783b",
 			"floating_ip_address": "10.10.10.4",
@@ -639,17 +635,15 @@ const listOutput = `
 			"port_forwardings": [],
 			"tags": [],
 			"created_at": "2024-01-24T13:30:50Z",
-			"updated_at": "2024-01-24T13:30:51Z",
-			"revision_number": 1,
-			"project_id": "fcad67a6189847c4aecfa3c81a05783b"
+			"updated_at": "2024-01-24T13:30:51Z"
 		}
-    ]
+	]
 }
 `
 
 // HandleFloatingIPListSuccessfully mocks floating ips call.
 func (m *SDMock) HandleFloatingIPListSuccessfully() {
-	m.Mux.HandleFunc("/floatingips", func(w http.ResponseWriter, r *http.Request) {
+	m.Mux.HandleFunc("/v2.0/floatingips", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(m.t, r, http.MethodGet)
 		testHeader(m.t, r, "X-Auth-Token", tokenID)
 
