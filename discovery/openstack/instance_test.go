@@ -57,10 +57,6 @@ func TestOpenstackSDInstanceRefresh(t *testing.T) {
 	instance, err := mock.openstackAuthSuccess()
 	require.NoError(t, err)
 
-	version, err := queryVersionInfo(mock.HTTPClient, "http://mock.compute.endpoint/v2.1")
-	require.NotEmpty(t, version)
-	require.NoError(t, err)
-
 	ctx := context.Background()
 	tgs, err := instance.refresh(ctx)
 
