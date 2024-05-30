@@ -124,7 +124,7 @@ func (m *SDMock) HandleAuthSuccessfully() {
                 "type": "identity",
                 "name": "keystone"
             },
-	    {
+	    	{
                 "endpoints": [
                     {
                         "id": "e2ffee808abc4a60916715b1d4b489dd",
@@ -136,8 +136,20 @@ func (m *SDMock) HandleAuthSuccessfully() {
                 ],
                 "id": "b7f2a5b1a019459cb956e43a8cb41e31",
                 "type": "compute"
+            },
+			{
+                "endpoints": [
+                    {
+                        "id": "39dc322ce86c4111b4f06c2eeae0841b",
+                        "interface": "public",
+                        "region": "RegionOne",
+                        "region_id": "RegionOne",
+                        "url": "%s"
+                    }
+                ],
+                "id": "c609fc430175452290b62a4242e8a7e8",
+                "type": "network"
             }
-
         ],
         "expires_at": "2013-02-27T18:30:59.999999Z",
         "is_domain": false,
@@ -174,7 +186,7 @@ func (m *SDMock) HandleAuthSuccessfully() {
         }
     }
 }
-	`, m.Endpoint())
+	`, m.Endpoint(), m.Endpoint())
 	})
 }
 
@@ -554,7 +566,7 @@ func (m *SDMock) HandleServerListSuccessfully() {
 
 const listOutput = `
 {
-    "floating_ips": [
+    "floatingips": [
 		{
 			"id": "03a77860-ae03-46c4-b502-caea11467a79",
 			"tenant_id": "fcad67a6189847c4aecfa3c81a05783b",
@@ -630,7 +642,7 @@ const listOutput = `
 			"updated_at": "2024-01-24T13:30:51Z",
 			"revision_number": 1,
 			"project_id": "fcad67a6189847c4aecfa3c81a05783b"
-		},
+		}
     ]
 }
 `
